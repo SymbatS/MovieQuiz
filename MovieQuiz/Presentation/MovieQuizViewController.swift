@@ -1,31 +1,33 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
+    
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         show(quiz: convert(model: questions[0]))
     }
     
-    struct ViewModel {
+    // MARK: - IB Actions
+    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
+    
+    // MARK: - Private Properties
+    private struct ViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
-    
     // для состояния "Вопрос показан"
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
-    
-    // для состояния "Результат квиза"
-    struct QuizResultsViewModel {
-        let title: String
-        let text: String
-        let buttonText: String
-    }
-    struct QuizQuestion {
+    private  struct QuizQuestion {
         // строка с названием фильма,
         // совпадает с названием картинки афиши фильма в Assets
         let image: String
@@ -34,8 +36,6 @@ final class MovieQuizViewController: UIViewController {
         // булевое значение (true, false), правильный ответ на вопрос
         let correctAnswer: Bool
     }
-    
-    
     // массив вопросов
     private let questions: [QuizQuestion] = [
         QuizQuestion(
@@ -79,14 +79,11 @@ final class MovieQuizViewController: UIViewController {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
-    
     // переменная с индексом текущего вопроса, начальное значение 0
-    // (по этому индексу будем искать вопрос в массиве, где индекс первого элемента 0, а не 1)
-    private var currentQuestionIndex = 0
+    private var currentQuestionIndex: Int = .zero
     // переменная со счётчиком правильных ответов, начальное значение закономерно 0
-    private var correctAnswers = 0
-    private var isButtonEnabled = true
-    
+    private var correctAnswers: Int = .zero
+    // MARK: - Private Methods
     // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel( // 1
@@ -107,27 +104,21 @@ final class MovieQuizViewController: UIViewController {
         let currentQuestion =  questions[currentQuestionIndex]
         let givenAnswer = false
         
-        if isButtonEnabled == true {
-            isButtonEnabled = false
-            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        }
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex]
         let givenAnswer = true
         
-        if isButtonEnabled == true {
-            isButtonEnabled = false
-            showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        }
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var counterLabel: UILabel!
-    @IBOutlet private var textLabel: UILabel!
-    
-    
+    // Блокировка кнопок
+    private func changeStateButton(isEnabled: Bool) {
+        noButton.isEnabled = isEnabled
+        yesButton.isEnabled = isEnabled
+    }
     // приватный метод, который меняет цвет рамки
     // принимает на вход булевое значение и ничего не возвращает
     // приватный метод, который меняет цвет рамки
@@ -140,12 +131,13 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true // 1
         imageView.layer.borderWidth = 8 // 2
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // 3
-        
+        imageView.layer.cornerRadius = 20 // Радиус скругления рамки
+        changeStateButton(isEnabled: false)
         // запускаем задачу через 1 секунду c помощью диспетчера задач
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             // код, который мы хотим вызвать через 1 секунду
-            self.isButtonEnabled = true
             self.showNextQuestionOrResults()
+            self.changeStateButton(isEnabled: true)
         }
     }
     
@@ -158,7 +150,7 @@ final class MovieQuizViewController: UIViewController {
             let alert = UIAlertController(title: "Этот раунд окончен!", // заголовок всплывающего окна
                                           message: "Ваш результат \(correctAnswers)/10", // текст во всплывающем окне
                                           preferredStyle: .alert) // preferredStyle может быть .alert или .actionSheet
-
+            
             // создаём для алерта кнопку с действием
             // в замыкании пишем, что должно происходить при нажатии на кнопку
             let action = UIAlertAction(title: "Сыграть еще раз", style: .default) { _ in
@@ -166,10 +158,10 @@ final class MovieQuizViewController: UIViewController {
                 self.correctAnswers = 0
                 self.show(quiz: self.convert(model: self.questions[0]))
             }
-
+            
             // добавляем в алерт кнопку
             alert.addAction(action)
-
+            
             // показываем всплывающее окно
             self.present(alert, animated: true, completion: nil)
         } else {
@@ -180,6 +172,4 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         }
     }
-    
-    
 }
