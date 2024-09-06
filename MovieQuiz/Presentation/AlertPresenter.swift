@@ -2,7 +2,7 @@ import UIKit
 
 class AlertPresenter: AlertPresenterProtocol {
     weak var delegate: AlertPresenterDelegate?
-    func setup(delegate: any AlertPresenterDelegate) {
+    func setup(delegate: AlertPresenterDelegate) {
         self.delegate = delegate
     }
     func showAlertResult(_ model: AlertModel) {
