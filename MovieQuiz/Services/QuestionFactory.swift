@@ -1,8 +1,8 @@
 import UIKit
 
-class QuestionFactory: QuestionFactoryProtocol {
+final class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoading
-    private var delegate: QuestionFactoryDelegate?
+    private weak var delegate: QuestionFactoryDelegate?
 
     init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
         self.moviesLoader = moviesLoader
@@ -77,12 +77,29 @@ class QuestionFactory: QuestionFactoryProtocol {
             guard let movie = self.movies[safe: index] else { return }
             
             var imageData = Data()
-           
+            var imageLoadedSuccessfully = false
+            
             do {
                 imageData = try Data(contentsOf: movie.resizedImageURL)
+                imageLoadedSuccessfully = !imageData.isEmpty
             } catch {
                 print("Failed to load image")
             }
+            // Если изображение не загружено, показать алерт
+                    if !imageLoadedSuccessfully {
+                        DispatchQueue.main.async { [weak self] in
+                            guard let self = self else { return }
+                            
+                            let alertModel = AlertModel(
+                                title: "Ошибка",
+                                message: "Не удалось загрузить изображение фильма. Попробуйте еще раз.",
+                                buttonText: "Ок") { [weak self] in
+                                    self?.loadData()
+                            }
+                            self.delegate?.presentAlert(alertModel)
+                        }
+                        return
+                    }
             
             let rating = Float(movie.rating) ?? 0
     
