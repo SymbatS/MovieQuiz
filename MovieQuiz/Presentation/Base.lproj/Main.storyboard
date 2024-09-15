@@ -33,6 +33,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1/10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o7O-XP-1NK" userLabel="Index Label">
                                                 <rect key="frame" x="317" y="0.0" width="36" height="23.666666666666668"/>
                                                 <color key="backgroundColor" name="YP Black"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="Index"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <color key="textColor" name="YP White"/>
                                                 <nil key="highlightedColor"/>
@@ -42,6 +43,7 @@
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GJ4-0K-MiG" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="43.666666666666686" width="353" height="529.66666666666652"/>
                                         <color key="backgroundColor" name="YP White"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="Poster"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="GJ4-0K-MiG" secondAttribute="height" multiplier="2:3" id="lDP-tb-eNr"/>
                                         </constraints>
@@ -59,6 +61,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f0q-Xr-p1l" userLabel="No Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="60"/>
                                                 <color key="backgroundColor" name="YP White"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="No"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Нет">
@@ -70,12 +73,13 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oeh-Xi-TrX"/>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5VI-Vx-z6u"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zya-EM-cQX" userLabel="Yes Button">
                                                 <rect key="frame" x="186.66666666666663" y="0.0" width="166.33333333333337" height="60"/>
                                                 <color key="backgroundColor" name="YP White"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="Yes"/>
                                                 <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="20"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Да">
@@ -87,7 +91,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VTQ-Fh-Xr8"/>
+                                                    <action selector="yesButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0vZ-dc-sMd"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -119,9 +123,9 @@
                         <outlet property="activityIndicator" destination="6sI-UV-1E4" id="W4X-aU-03z"/>
                         <outlet property="counterLabel" destination="o7O-XP-1NK" id="riR-w2-pT7"/>
                         <outlet property="imageView" destination="GJ4-0K-MiG" id="Nsv-AA-aMK"/>
-                        <outlet property="noButton" destination="f0q-Xr-p1l" id="naQ-CK-f7z"/>
+                        <outlet property="noButton" destination="f0q-Xr-p1l" id="DGH-uX-dOl"/>
                         <outlet property="textLabel" destination="Bix-4E-u9r" id="2Q6-MR-7wu"/>
-                        <outlet property="yesButton" destination="zya-EM-cQX" id="OHQ-TZ-rU7"/>
+                        <outlet property="yesButton" destination="zya-EM-cQX" id="5Du-Uq-BQK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
