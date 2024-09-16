@@ -3,6 +3,7 @@ import UIKit
 final class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoading
     private weak var delegate: QuestionFactoryDelegate?
+    private var usedIndex: [Int] = []
 
     init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
         self.moviesLoader = moviesLoader
@@ -30,13 +31,12 @@ final class QuestionFactory: QuestionFactoryProtocol {
             guard let self = self
             else { return }
 
-            var usedIndex: [Int] = []
             var index: Int
             repeat {
                 index = (0..<self.movies.count).randomElement() ?? 0
-            }  while usedIndex.contains(index)
+            }  while self.usedIndex.contains(index)
             
-            usedIndex.append(index)
+            self.usedIndex.append(index)
             guard let movie = self.movies[safe: index] else {
                 return
             }

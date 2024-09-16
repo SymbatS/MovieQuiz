@@ -1,6 +1,6 @@
 import UIKit
 
-protocol MovieQuizViewControllerProtocol: AnyObject {
+protocol MovieQuizViewControllerProtocol: AnyObject, AlertPresenterDelegate {
     func show(quiz step: QuizStepViewModel)
     func show(quiz result: QuizResultsViewModel)
     
@@ -13,5 +13,5 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
     
     func changeStateButton(isEnabled: Bool)
     
-    var alertPresenter: AlertPresenterProtocol { get }
+    func presentAlert(_ alert: UIAlertController)
 }

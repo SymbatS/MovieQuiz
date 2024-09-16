@@ -2,6 +2,10 @@ import XCTest
 @testable import MovieQuiz
 
 final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
+    func presentAlert(_ alert: UIAlertController) {
+    
+    }
+    
     var alertPresenter: AlertPresenterProtocol = AlertPresenter()
 
     func show(quiz step: QuizStepViewModel) {

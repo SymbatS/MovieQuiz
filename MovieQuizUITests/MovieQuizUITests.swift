@@ -11,12 +11,14 @@ final class MovieQuizUITests: XCTestCase {
         
         continueAfterFailure = false
     }
+    
     override func tearDownWithError() throws {
         try super.tearDownWithError()
         
         app.terminate()
         app = nil
     }
+    
     func testYesButton() {
         sleep(3)
         
@@ -30,11 +32,11 @@ final class MovieQuizUITests: XCTestCase {
         let secondPosterData = secondPoster.screenshot().pngRepresentation
         
         let indexLabel = app.staticTexts["Index"]
-
+        
         XCTAssertNotEqual(firstPosterData, secondPosterData)
         XCTAssertEqual(indexLabel.label, "2/10")
-
     }
+    
     func testNoButton() {
         sleep(3)
         
@@ -48,11 +50,11 @@ final class MovieQuizUITests: XCTestCase {
         let secondPosterData = secondPoster.screenshot().pngRepresentation
         
         let indexLabel = app.staticTexts["Index"]
-
+        
         XCTAssertNotEqual(firstPosterData, secondPosterData)
         XCTAssertEqual(indexLabel.label, "2/10")
-
     }
+    
     func testGameFinish() {
         sleep(3)
         
@@ -63,10 +65,11 @@ final class MovieQuizUITests: XCTestCase {
         
         let alert = app.alerts["Alert"]
         
-        XCTAssertTrue(alert.exists)
+        XCTAssertTrue(alert.exists, "Alert не был найден")
         XCTAssertTrue(alert.label == "Этот раунд окончен!")
-        XCTAssertTrue(alert.buttons.firstMatch.label == "Сыграть еще раз!")
+        XCTAssertTrue(alert.buttons.firstMatch.label == "Сыграть ещё раз!")
     }
+    
     func testAlertDismiss() {
         sleep(3)
         
@@ -82,7 +85,7 @@ final class MovieQuizUITests: XCTestCase {
         
         let indexLabel = app.staticTexts["Index"]
         
-        XCTAssertFalse(alert.exists)
+        XCTAssertFalse(alert.exists, "Alert всё ещё существует после нажатия на кнопку 'Сыграть ещё раз!'")
         XCTAssertTrue(indexLabel.label == "1/10")
     }
 }
