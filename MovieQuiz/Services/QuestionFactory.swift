@@ -3,55 +3,14 @@ import UIKit
 final class QuestionFactory: QuestionFactoryProtocol {
     private let moviesLoader: MoviesLoading
     private weak var delegate: QuestionFactoryDelegate?
+    private var usedIndex: [Int] = []
 
     init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate?) {
         self.moviesLoader = moviesLoader
         self.delegate = delegate
     }
     private var movies: [MostPopularMovie] = []
-    /*
-    let questions: [QuizQuestion] = [
-        QuizQuestion(
-            image: "The Godfather",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Dark Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Kill Bill",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Avengers",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Deadpool",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Green Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Old",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "The Ice Age Adventures of Buck Wild",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "Tesla",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "Vivarium",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false)
-    ] */
+
     func loadData() {
         moviesLoader.loadMovies { [weak self] result in
             DispatchQueue.main.async {
@@ -65,16 +24,22 @@ final class QuestionFactory: QuestionFactoryProtocol {
                 }
             }
         }
-    } 
-    func setup(delegate: QuestionFactoryDelegate) {
-        self.delegate = delegate
     }
+
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
-            guard let self = self else { return }
-            let index = (0..<self.movies.count).randomElement() ?? 0
+            guard let self = self
+            else { return }
+
+            var index: Int
+            repeat {
+                index = (0..<self.movies.count).randomElement() ?? 0
+            }  while self.usedIndex.contains(index)
             
-            guard let movie = self.movies[safe: index] else { return }
+            self.usedIndex.append(index)
+            guard let movie = self.movies[safe: index] else {
+                return
+            }
             
             var imageData = Data()
             var imageLoadedSuccessfully = false
@@ -85,32 +50,31 @@ final class QuestionFactory: QuestionFactoryProtocol {
             } catch {
                 print("Failed to load image")
             }
-            // Если изображение не загружено, показать алерт
-                    if !imageLoadedSuccessfully {
-                        DispatchQueue.main.async { [weak self] in
-                            guard let self = self else { return }
-                            
-                            let alertModel = AlertModel(
-                                title: "Ошибка",
-                                message: "Не удалось загрузить изображение фильма. Попробуйте еще раз.",
-                                buttonText: "Ок") { [weak self] in
-                                    self?.loadData()
-                            }
-                            self.delegate?.presentAlert(alertModel)
+            if !imageLoadedSuccessfully {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    
+                    let alertModel = AlertModel(
+                        title: "Ошибка",
+                        message: "Не удалось загрузить изображение фильма. Попробуйте еще раз.",
+                        buttonText: "Ок") { [weak self] in
+                            self?.loadData()
                         }
-                        return
-                    }
+                    self.delegate?.presentAlert(alertModel)
+                }
+                return
+            }
             
             let rating = Float(movie.rating) ?? 0
-    
+            
             let numbers = (6..<10).randomElement() ?? 7
             let text = "Рейтинг этого фильма больше чем \(numbers)?"
             
             let correctAnswer = rating > Float(numbers)
             
             let question = QuizQuestion(image: imageData,
-                                         text: text,
-                                         correctAnswer: correctAnswer)
+                                        text: text,
+                                        correctAnswer: correctAnswer)
             
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }

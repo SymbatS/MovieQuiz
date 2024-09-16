@@ -1,6 +1,6 @@
 import UIKit
 
-class AlertPresenter: AlertPresenterProtocol {
+final class AlertPresenter: AlertPresenterProtocol {
     weak var delegate: AlertPresenterDelegate?
     func setup(delegate: AlertPresenterDelegate) {
         self.delegate = delegate
@@ -12,7 +12,7 @@ class AlertPresenter: AlertPresenterProtocol {
         let action = UIAlertAction(title: model.buttonText, style: .default) {_ in
             model.completion()
         }
-        
+        alert.view.accessibilityIdentifier = "Alert"
         alert.addAction(action)
         delegate?.presentAlert(alert)
     }

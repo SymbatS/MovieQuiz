@@ -1,0 +1,57 @@
+{
+  "configurations" : [
+    {
+      "id" : "29EA17EA-E62D-4584-BF4B-9482B97E2BF1",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:MovieQuiz.xcodeproj",
+      "identifier" : "AD1ABAAD2831907B00B3E448",
+      "name" : "MovieQuiz"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:MovieQuiz.xcodeproj",
+        "identifier" : "A30CF5FA2C96B3E2000EFB9C",
+        "name" : "MovieQuizViewControllerMock"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "selectedTests" : [
+        "MovieQuizUITests\/testAlertDismiss()",
+        "MovieQuizUITests\/testGameFinish()",
+        "MovieQuizUITests\/testNoButton()",
+        "MovieQuizUITests\/testYesButton()"
+      ],
+      "target" : {
+        "containerPath" : "container:MovieQuiz.xcodeproj",
+        "identifier" : "A30702022C92C31300C0603B",
+        "name" : "MovieQuizUITests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "selectedTests" : [
+        "ArrayTests\/testGetValueInRange()",
+        "ArrayTests\/testGetValueOutOfRange()",
+        "MoviesLoaderTests\/testFailureLoading()",
+        "MoviesLoaderTests\/testSuccessLoading()"
+      ],
+      "target" : {
+        "containerPath" : "container:MovieQuiz.xcodeproj",
+        "identifier" : "A30701F12C917DA800C0603B",
+        "name" : "MovieQuizTests"
+      }
+    }
+  ],
+  "version" : 1
+}
